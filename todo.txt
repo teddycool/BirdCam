@@ -1,0 +1,24 @@
+
+
+* Implement IR-light and control
+* Fix a working streamer
+* Fix recording of video by command from python
+* Implement RTC
+* Implement temp/hum sensor
+*
+
+
+
+lagra filerna lokalt (inte i tmp) och synka automatiskt till egen webserver
+videoströmma 'live'
+mät temperatur och luftfuktighet i övre delen av holken
+mät temperatur i nedre delen av holken
+
+Att lösa:
+* Synk. / kopiering från RPi till webservern?
+* Videoström från opencv via mjpgstreamer med temp värden
+* Opencv detekterar om det är någon i holken.
+
+
+
+http://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/

@@ -27,7 +27,7 @@ class Vision(object):
         self._cam.framerate = 10
         self._rawCapture = PiRGBArray(self._cam, size=resolution)
         self._center = (resolution[0]/2, resolution[1]/2)
-
+        #TODO: turn off cam led
         #TODO: check that streamer is running
 
 
@@ -35,23 +35,19 @@ class Vision(object):
         print "Vision initialised"
         self._lastframetime = time.time()
         self._imagegenerator = self._cam.capture_continuous(self._rawCapture, format="bgr", use_video_port=True)
-       # self._signFinder.initialize()
 
 
 
     def update(self):
         print "Vision update"
         self._log.info("Update started")
-         #TODO: make threaded in exception catcher
-        # https://picamera.readthedocs.org/en/release-1.10/recipes2.html#rapid-capture-and-processing
-
         frame = self._imagegenerator.next()
         self._rawCapture.truncate()
         self._rawCapture.seek(0)
         self._frame = frame.array
 
         if birdcam["Vision"]["WriteRawImageToFile"]:
-            cv2.imwrite("/home/pi/LegoRover/Imgs/camseq"+str(self._seqno)+".jpg",self._frame )
+            cv2.imwrite("/home/pi/BirdCam/Imgs/camseq"+str(self._seqno)+".jpg",self._frame )
         #TODO: deliver found obstacles back to main-loop or sensor-module
         self._log.info("Update finnished")
         #TODO: return detected obstacles etc
@@ -61,20 +57,13 @@ class Vision(object):
         framerate = 1/(time.time()-self._lastframetime)
         print "Vision framerate: " + str(framerate)
         self._lastframetime= time.time()
-        #frame = self._signFinder.draw(frame)
-        #frame = self._contourFinder.draw(frame)
-       # frame = self._faceDetector.draw(frame)
-        #frame = self._laserfinder.draw(frame)
 
-        #draw cross for center of image
-        cv2.line(frame,(self._center[0]-20,self._center[1]),(self._center[0]+20, self._center[1]),(255,255,255),2)
-        cv2.line(frame,(self._center[0],self._center[1]-20),(self._center[0],self._center[1]+20),(255,255,255),2)
         #cv2.line(frame, self._laserfinder._point, self._center,(0,255,0),2)
         cv2.putText(frame,"Streamer: " + birdcam["Streamer"]["StreamerImage"] + " Current framerate: " + str(round(framerate, 2)), (5,20),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
         #Draw to streamer lib to 'publish'
         cv2.imwrite(birdcam["Streamer"]["StreamerImage"],frame)
         if birdcam["Vision"]["WriteCvImageToFile"]:
-            cv2.imwrite("/home/pi/LegoRover/Imgs/cvseq"+str(self._seqno)+".jpg",frame)
+            cv2.imwrite("/home/pi/BirdCam/Imgs/cvseq"+str(self._seqno)+".jpg",frame)
         self._seqno = self._seqno+1 #Used globally but set here        #TODO: set up a defined (max) framerate from config
         self._log.info("Draw finnished")
 

@@ -4,9 +4,9 @@ __author__ = 'teddycool'
 import time
 
 from Sensors import Sensors
-from Driver import Driver
 from Vision import Vision
-from Actuators import Laser
+from Actuators import IrLigth
+from config import birdcam
 
 
 #Global GPIO used by all...
@@ -18,9 +18,8 @@ class MainLoop(object):
         self._state ={}
         GPIO.setmode(GPIO.BCM)
         self._gpio = GPIO
-        self._driver = Driver.Driver(self._gpio)
-        self._sensors = Sensors.Sensors(self._gpio)
         self._vision = Vision.Vision((640,480))
+        self._irlight = IrLigth.IrLigth(self._gpio,birdcam["IrLigth"]["ControlPin"])
 
 
     def initialize(self):
@@ -30,21 +29,20 @@ class MainLoop(object):
         print os.system('sudo LD_LIBRARY_PATH=/home/pi/mjpg-streamer/mjpg-streamer /home/pi/mjpg-streamer/mjpg-streamer/mjpg_streamer -i "input_file.so -f /tmp/stream -n pic.jpg" -o "output_http.so -w /home/pi/mjpg-streamer/mjpg-streamer/www" &')
         print "Starting timers..."
         self.time=time.time()
+        self._irlight.initialize()
         self._vision.initialize()
         print "BirdCam started at ", self.time
 
     def update(self):
-        self._sensors.update()
+        return
         #TODO: add vision update...
-        #self._driver.update(self._sensors.sensorvaluesdict)
         #time.sleep(0.01)
 
     def draw(self):
         frame = self._vision.getCurrentFrame()
-        self._sensors.draw(frame)
-        self._driver.draw(frame)
         self._vision.draw(frame)
 
     def __del__(self):
+        print  "GPIO-cleanup..."
         GPIO.cleanup()
         print "MainLoop cleaned up"

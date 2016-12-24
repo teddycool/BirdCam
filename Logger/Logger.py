@@ -1,13 +1,13 @@
 __author__ = 'teddycool'
 import time
 import datetime
-from config import roverconfig
+from config import birdcam
 
 import os
 import logging
 import sys
 
-LOG_FILENAME = roverconfig["Logger"]["LogFile"]
+LOG_FILENAME = birdcam["Logger"]["LogFile"]
 
 class Singleton(object):
     """
