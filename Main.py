@@ -1,33 +1,38 @@
-__author__ = 'teddycool'
-
-import os, sys
-from MainLoop import MainLoop
-from Logger import Logger
+import MainLoop
+import time
+import os
+import sys
 
 class Main(object):
 
     def __init__(self):
-        print "Init Main object..."
-        self._mainloop =  MainLoop()
-        self._log = Logger.Logger('main')
+        print "Init Main object for CamDevice..."
+        self._mainLoop=MainLoop.MainLoop()
 
-
-    def run(self):
-        self._mainloop.initialize()
-        running=True
-        frames = 0
+        self._mainLoop.initialize()
+        running = True
         while running:
             try:
-                self._mainloop.update()
-                self._mainloop.draw()
-                print "End of Main..."
-            except Exception as e:
+                self._mainLoop.update()
+            except:
                 running = False
-                print str(e)
+                del (self._mainLoop)
+                e = sys.exc_info()
+                t = time
+                n = time.ctime()[11:13] + time.ctime()[14:16]
+                s = str(n).rjust(4)
+                f = file(time.asctime() + ".log", 'w')
+                for l in e:
+                    f.write(str(l))
+                #TODO: add reboot counter to avoid restarting over and over again...
+                os.system('sudo reboot')
 
+
+#Testcode to run module. Standard Python way of testing modules.
+#Put in  /etc/rc.local for autostart at boot:
+# cd /home/pi/NetBridgLogger
+# sudo python Main.py &
 
 if __name__ == "__main__":
-    print 'Started from: Main.py,  if __name__ == "__main__" '
-    gl=Main()
-    gl.run()
-
+    cd=Main()
+    cd.run()

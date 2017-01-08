@@ -29,7 +29,8 @@ class DHT(object):
 
 if __name__ == '__main__':
     print "Testcode for DHT humidity and temp sensors"
-    dht11=DHT('11',21)
+    type = '2302'
+    sensor=DHT(type,10)
     while True:
-        print "DHT11-> " + str(dht11.read())
+        print "Type: " + type + "-> " + str(sensor.read())
         time.sleep(1)

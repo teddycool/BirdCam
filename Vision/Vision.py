@@ -5,15 +5,27 @@ __author__ = 'teddycool'
 # http://blog.miguelgrinberg.com/post/stream-video-from-the-raspberry-pi-camera-to-web-browsers-even-on-ios-and-android
 import time
 import sys
+import os
 
 import cv2
 
 from picamera import PiCamera
 #import picamera.array
 from picamera.array import PiRGBArray
-from config import birdcam
-from Logger import Logger
-import io
+try:
+    from config import birdcam
+except:
+    birdcam = {"Streamer": {"StreamerImage": "/tmp/stream/pic.jpg", "StreamerLib": "/tmp/stream"},
+               "RefreshRates": {"MainLoop": 10, "Streamer": 2, "Sensors": 0.1},  # times per second
+               "Vision": {"WriteRawImageToFile": False, "WriteCvImageToFile": False,
+                          "VideoPath": "/home/pi/BirdCam/Videos/"},
+               "Logger": {"LogFile": "/home/pi/BirdCam/Logger/log.txt"},
+               #            "IrLight": {"Pin": 12, "StartFreq": 50},
+               "TempHum": {"Pin": 10},
+               "OcuLed": {"Pin": 11},
+               }
+#from Logger import Logger
+#import io
 
 
 class Vision(object):
@@ -21,7 +33,7 @@ class Vision(object):
     def __init__(self, resolution):
         print "Vision object started..."
         self._seqno = 0
-        self._log = Logger.Logger("Vision")
+ #       self._log = Logger.Logger("Vision")
         self._cam = PiCamera()
         self._cam.resolution = resolution
         self._cam.framerate = 10
@@ -36,11 +48,16 @@ class Vision(object):
         self._lastframetime = time.time()
         self._imagegenerator = self._cam.capture_continuous(self._rawCapture, format="bgr", use_video_port=True)
 
+        print "Starting streamer..."
+        print os.system('sudo mkdir /tmp/stream')
+        print os.system('sudo LD_LIBRARY_PATH=/home/pi/mjpg-streamer/mjpg-streamer /home/pi/mjpg-streamer/mjpg-streamer/mjpg_streamer -i "input_file.so -f /tmp/stream -n pic.jpg" -o "output_http.so -w /home/pi/mjpg-streamer/mjpg-streamer/www" &')
+
+
 
 
     def update(self):
         print "Vision update"
-        self._log.info("Update started")
+#        self._log.info("Update started")
         frame = self._imagegenerator.next()
         self._rawCapture.truncate()
         self._rawCapture.seek(0)
@@ -49,11 +66,11 @@ class Vision(object):
         if birdcam["Vision"]["WriteRawImageToFile"]:
             cv2.imwrite("/home/pi/BirdCam/Imgs/camseq"+str(self._seqno)+".jpg",self._frame )
         #TODO: deliver found obstacles back to main-loop or sensor-module
-        self._log.info("Update finnished")
+ #       self._log.info("Update finnished")
         #TODO: return detected obstacles etc
 
     def draw(self, frame):
-        self._log.info("Draw started")
+ #       self._log.info("Draw started")
         framerate = 1/(time.time()-self._lastframetime)
         print "Vision framerate: " + str(framerate)
         self._lastframetime= time.time()
@@ -65,7 +82,7 @@ class Vision(object):
         if birdcam["Vision"]["WriteCvImageToFile"]:
             cv2.imwrite("/home/pi/BirdCam/Imgs/cvseq"+str(self._seqno)+".jpg",frame)
         self._seqno = self._seqno+1 #Used globally but set here        #TODO: set up a defined (max) framerate from config
-        self._log.info("Draw finnished")
+ #       self._log.info("Draw finnished")
 
 
     def getCurrentFrame(self):
@@ -82,11 +99,9 @@ class Vision(object):
 if __name__ == '__main__':
     print "Testcode for Vision"
     import RPi.GPIO as GPIO
-    from Actuators import Laser
+ #   from Actuators import Laser
 
     GPIO.setmode(GPIO.BCM)
-    laser = Laser.Laser(GPIO, 21)
-    laser.activate(True)
 
     vision= Vision( (640,480))
     vision.initialize()
@@ -98,7 +113,6 @@ if __name__ == '__main__':
             vision.draw(frame)
             time.sleep(0.2)
     except:
-        laser.activate(False)
         GPIO.cleanup()
         e = sys.exc_info()[0]
         print e

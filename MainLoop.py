@@ -3,9 +3,9 @@ __author__ = 'teddycool'
 
 import time
 
-from Sensors import Sensors
+#from Sensors import Sensors
 from Vision import Vision
-from Actuators import IrLigth
+#from Actuators import IrLigth
 from config import birdcam
 
 
@@ -19,17 +19,14 @@ class MainLoop(object):
         GPIO.setmode(GPIO.BCM)
         self._gpio = GPIO
         self._vision = Vision.Vision((640,480))
-        self._irlight = IrLigth.IrLigth(self._gpio,birdcam["IrLigth"]["ControlPin"])
+       # self._irlight = IrLigth.IrLigth(self._gpio,birdcam["IrLigth"]["ControlPin"])
 
 
     def initialize(self):
         print "MainLoop init..."
-        print "Starting streamer..."
-        print os.system('sudo mkdir /tmp/stream')
-        print os.system('sudo LD_LIBRARY_PATH=/home/pi/mjpg-streamer/mjpg-streamer /home/pi/mjpg-streamer/mjpg-streamer/mjpg_streamer -i "input_file.so -f /tmp/stream -n pic.jpg" -o "output_http.so -w /home/pi/mjpg-streamer/mjpg-streamer/www" &')
         print "Starting timers..."
         self.time=time.time()
-        self._irlight.initialize()
+       # self._irlight.initialize()
         self._vision.initialize()
         print "BirdCam started at ", self.time
 
