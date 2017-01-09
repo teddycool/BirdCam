@@ -5,18 +5,28 @@ import sys
 
 class Main(object):
 
+    #TODO: add debug mode and get rid of all printouts when not in debug...
+
     def __init__(self):
         print "Init Main object for CamDevice..."
         self._mainLoop=MainLoop.MainLoop()
 
         self._mainLoop.initialize()
+
+
+    def run(self):
         running = True
         while running:
+            start = time.time()
             try:
-                self._mainLoop.update()
-            except:
+                frame = self._mainLoop.update()
+                end = time.time()
+                fr = round(1/(end-start),1)
+                self._mainLoop.draw(frame, fr)
+                start = time.time()
+            except (KeyboardInterrupt):
                 running = False
-                del (self._mainLoop)
+            except:
                 e = sys.exc_info()
                 t = time
                 n = time.ctime()[11:13] + time.ctime()[14:16]
@@ -25,12 +35,14 @@ class Main(object):
                 for l in e:
                     f.write(str(l))
                 #TODO: add reboot counter to avoid restarting over and over again...
+                print "Waiting to reboot..."
+                time.sleep(2)
                 os.system('sudo reboot')
 
 
 #Testcode to run module. Standard Python way of testing modules.
 #Put in  /etc/rc.local for autostart at boot:
-# cd /home/pi/NetBridgLogger
+# cd /home/pi/BirdCam
 # sudo python Main.py &
 
 if __name__ == "__main__":

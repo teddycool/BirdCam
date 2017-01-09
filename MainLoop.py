@@ -3,8 +3,8 @@ __author__ = 'teddycool'
 
 import time
 
-#from Sensors import Sensors
-from Vision import Vision
+from Sensors import DHT
+from Vision import Vision2
 #from Actuators import IrLigth
 from config import birdcam
 
@@ -18,8 +18,9 @@ class MainLoop(object):
         self._state ={}
         GPIO.setmode(GPIO.BCM)
         self._gpio = GPIO
-        self._vision = Vision.Vision((640,480))
+        self._vision = Vision2.Vision()
        # self._irlight = IrLigth.IrLigth(self._gpio,birdcam["IrLigth"]["ControlPin"])
+        self._dht = DHT.DHT(birdcam["TempHum"]["Type"], birdcam["TempHum"]["Pin"])
 
 
     def initialize(self):
@@ -31,13 +32,16 @@ class MainLoop(object):
         print "BirdCam started at ", self.time
 
     def update(self):
-        return
-        #TODO: add vision update...
-        #time.sleep(0.01)
+        print " MainLoop update started"
+        self._dht.update()
+        frame = self._vision.update()
+        #TODO: add sync/copy mechanism to netstorage at certain intervals
+        return frame
 
-    def draw(self):
-        frame = self._vision.getCurrentFrame()
-        self._vision.draw(frame)
+    def draw(self, frame, fr):
+        print " MainLoop draw started"
+        frame = self._dht.draw(frame)
+        self._vision.draw(frame, fr)
 
     def __del__(self):
         print  "GPIO-cleanup..."

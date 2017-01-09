@@ -1,13 +1,13 @@
 __author__ = 'teddycool'
 #Handling all configuration for birdcam
-birdcam = { "cam": {"res": (640, 480), "id": 1, "framerate": 20},
+birdcam = { "Cam": {"Res": (1024, 768), "Id": 1, "FrameRate": 20},
             "Streamer": {"StreamerImage": "/tmp/stream/pic.jpg", "StreamerLib": "/tmp/stream"},
-            "RefreshRates": {"MainLoop": 10, "Streamer": 2, "Sensors": 0.1}, #times per second
+            "RefreshRates": {"MainLoop": 10, "Streamer": 2, "Sensors": 0.01}, #times per second
             "Vision": {"WriteRawImageToFile": False, "WriteCvImageToFile": False, "PrintFrameRate": True,
-                       "VideoPath": "/home/pi/BirdCam/Videos/"},
+                       "VideoFile": "/home/pi/BirdCam/Videos/test.avi"},
             "Logger": {"LogFile": "/home/pi/BirdCam/Logger/log.txt"},
-#            "IrLight": {"Pin": 12, "StartFreq": 50},
-            "TempHum": {"Pin": 10},
+            "IrLight": {"Pin": 12, "StartFreq": 50},
+            "TempHum": {"Type": "2302","Pin": 2},
             "OcuLed" : {"Pin": 11},
                 }
 
