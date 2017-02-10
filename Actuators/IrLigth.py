@@ -3,7 +3,7 @@ try:
     from config import birdcam
 except:
     birdcam = {
-                "IrLight": {"ControlPin": 12, "StartFreq": 50}
+                "IrLight": {"ControlPins": [14], "StartFreq": 50}
                 }
 
 class IrLigth(object):
@@ -11,8 +11,8 @@ class IrLigth(object):
         self._gpio = GPIO
         self._pin = controlpin
         self._gpio.setup(self._pin,self._gpio.OUT)
-        self._pin =  self._gpio.PWM(self._pin, 200)
-        self._currrentFreq = birdcam["IrLight"]["StartFreq"]
+        self._pin =  self._gpio.PWM(self._pin, 1000)
+        self._currrentFreq = birdcam["IrLigth"]["StartFreq"]
 
     def initialize(self):
         self._pin.start(self._currrentFreq)

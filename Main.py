@@ -44,6 +44,12 @@ class Main(object):
 #Put in  /etc/rc.local for autostart at boot:
 # cd /home/pi/BirdCam
 # sudo python Main.py &
+#Put in  /etc/rc.local to create the nedded ramdisk:
+#sudo mkdir -p /ram
+#sudo mount -t tmpfs -o size=100m tmpfs /ram
+
+# sudo mount -t cifs //192.168.0.4/videos /mnt/ubuntu -o user=pi,pass=raspberry,dom=EV39
+
 
 if __name__ == "__main__":
     cd=Main()

@@ -2,7 +2,8 @@
 A raspberry pi 3 with an ir-cam mounted in a bird-house connected by WLAN to our network.
 Video-files will be stored on the pi but also synchronized to a network-disc and web-server.
 Videos will be recorded as soon something moves in the birdhouse.
-Sensors will detect temperature and humidity and a led on the outside will show if it's occupied. This information will also be put as text in the video-stream.
+Sensors will detect temperature and humidity. 
+This information will also be put as text in the video-stream.
 
 Project webpage (currently in swedish):
 http://www.sundback.com/wp/projekt/holkcam/holkcam2/
