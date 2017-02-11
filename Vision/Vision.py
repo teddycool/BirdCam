@@ -62,17 +62,10 @@ class Vision(object):
         self._lastframetime = time.time()
         self._rawCapture = PiRGBArray(self._cam, size= self._resolution)
         self._imagegenerator = self._cam.capture_continuous(self._rawCapture, format="bgr", use_video_port=True)
-
-        first = self._frameUpdate()
-        current = self._frameUpdate()
-        next = self._frameUpdate()
-
-        self._md.initialize(first, current ,next)
+        self._md.initialize()
         #TODO: move videoformat to config?
         #TODO: Move to motion detector...
         #self._videow = cv2.VideoWriter(birdcam["Vision"]["VideoFile"], cv2.VideoWriter_fourcc(*'XVID'), 5,  self._resolution, True)
-        frame = self._frameUpdate()
-        return frame
 
     def _frameUpdate(self):
         rawframe = self._imagegenerator.next()
@@ -85,7 +78,7 @@ class Vision(object):
         #TODO: add logic for frame changed...
         #TODO: fix VideoWriter to open/close files when needed
         frame = self._frameUpdate()
-        self._md.update(frame)
+        frame = self._md.update(frame)
         #self._recording = self._md.update(frame)
         return frame
 

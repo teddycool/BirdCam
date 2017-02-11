@@ -24,20 +24,20 @@ class Main(object):
                 fr = round(1/(end-start),1)
                 self._mainLoop.draw(frame, fr)
                 start = time.time()
-            except (KeyboardInterrupt):
-                running = False
             except:
-                e = sys.exc_info()
-                t = time
-                n = time.ctime()[11:13] + time.ctime()[14:16]
-                s = str(n).rjust(4)
-                f = file(time.asctime() + ".log", 'w')
-                for l in e:
-                    f.write(str(l))
-                #TODO: add reboot counter to avoid restarting over and over again...
-                print "Waiting to reboot..."
-                time.sleep(2)
-                os.system('sudo reboot')
+                running = False
+            # except:
+            #     e = sys.exc_info()
+            #     t = time
+            #     n = time.ctime()[11:13] + time.ctime()[14:16]
+            #     s = str(n).rjust(4)
+            #     f = file(time.asctime() + ".log", 'w')
+            #     for l in e:
+            #         f.write(str(l))
+            #     #TODO: add reboot counter to avoid restarting over and over again...
+            #     print "Waiting to reboot..."
+            #     time.sleep(2)
+            #     os.system('sudo reboot')
 
 
 #Testcode to run module. Standard Python way of testing modules.
