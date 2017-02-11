@@ -79,24 +79,21 @@ class Vision(object):
         #TODO: fix VideoWriter to open/close files when needed
         frame = self._frameUpdate()
         frame = self._md.update(frame)
-        #self._recording = self._md.update(frame)
         return frame
 
     def draw(self, frame, framerate=0):
         cv2.putText(frame, time.strftime("%Y-%m-%d %H:%M:%S"), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
         frame = self._md.draw(frame)
         if birdcam["Vision"]["PrintFrameRate"] and framerate!=0:
-            cv2.putText(frame, "Framerate: " + str(framerate), (10, 70),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
+            cv2.putText(frame, "Framerate: " + str(framerate), (300, 30),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
         #Note in stream when recording...
-        if self._recording and (int(time.ctime()[18:19]) % 2 == 0):
-            cv2.putText(frame, "<--Recording-->" , (250, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255),5)
+        #if self._recording and (int(time.ctime()[18:19]) % 2 == 0):
+        #cv2.putText(frame, "<--Recording-->" , (500, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
         #Write to actual frame for MJPG streamer
         #cv2.VideoWriter.open(birdcam["Vision"]["VideoFile"], cv2.VideoWriter_fourcc(*'XVID'), 5,  self._resolution, True )
         cv2.imwrite(birdcam["Streamer"]["StreamerImage"], frame)
         #TODO: add logic to record video when framess are changed and a number of frames/seconds after...
-        #if self._md.
-        #self._videow.write(frame)
         return frame
 
 

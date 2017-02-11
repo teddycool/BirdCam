@@ -19,29 +19,22 @@ class MotionDetector(object):
         self._diffcount=0
 
     def initialize(self):
-        self.bgSub = cv2.bgsegm.createBackgroundSubtractorMOG()
-        return
+        self.bgSub = cv2.bgsegm.createBackgroundSubtractorMOG(history=50)
 
     def update(self, frame):
         mask = self._prepareFrame(frame)
-        if self._diffcount[1] > 100:
+        if self._diffcount[1] > birdcam["Vision"]["MotionCount"]:
             self._motionDetected = True
         else:
             self._motionDetected = False
         return frame
 
-
-
-
     def draw(self, frame):
         if self._motionDetected:
-            cv2.putText(frame, "VIDEO: Motion Detected " + " #" + str(self._diffcount[1]), (10, 90), cv2.FONT_HERSHEY_SIMPLEX,
-                        0.5, (255, 255, 255), 2)
+            cv2.putText(frame, "VIDEO: Motion Detected " + " #" + str(self._diffcount[1]), (10, 90), cv2.FONT_HERSHEY_SIMPLEX,0.5, (255, 255, 255), 2)
         else:
             cv2.putText(frame, "VIDEO: No motion detected"+ " #" + str(self._diffcount[1]), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
         return frame
-
-
 
     def _prepareFrame(self,frame):
         imgray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
