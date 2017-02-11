@@ -62,26 +62,36 @@ class Vision(object):
         self._lastframetime = time.time()
         self._rawCapture = PiRGBArray(self._cam, size= self._resolution)
         self._imagegenerator = self._cam.capture_continuous(self._rawCapture, format="bgr", use_video_port=True)
-        frame =  self.update()
-        self._md.initialize(frame)
+
+        first = self._frameUpdate()
+        current = self._frameUpdate()
+        next = self._frameUpdate()
+
+        self._md.initialize(first, current ,next)
         #TODO: move videoformat to config?
         #TODO: Move to motion detector...
         #self._videow = cv2.VideoWriter(birdcam["Vision"]["VideoFile"], cv2.VideoWriter_fourcc(*'XVID'), 5,  self._resolution, True)
+        frame = self._frameUpdate()
+        return frame
+
+    def _frameUpdate(self):
+        rawframe = self._imagegenerator.next()
+        self._rawCapture.truncate()
+        self._rawCapture.seek(0)
+        frame = rawframe.array
         return frame
 
     def update(self, saveToFile = False):
         #TODO: add logic for frame changed...
         #TODO: fix VideoWriter to open/close files when needed
-        rawframe = self._imagegenerator.next()
-        self._rawCapture.truncate()
-        self._rawCapture.seek(0)
-        frame = rawframe.array
-        self._recording = self._md.update(frame)
-
+        frame = self._frameUpdate()
+        self._md.update(frame)
+        #self._recording = self._md.update(frame)
         return frame
 
     def draw(self, frame, framerate=0):
         cv2.putText(frame, time.strftime("%Y-%m-%d %H:%M:%S"), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+        frame = self._md.draw(frame)
         if birdcam["Vision"]["PrintFrameRate"] and framerate!=0:
             cv2.putText(frame, "Framerate: " + str(framerate), (10, 70),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
         #Note in stream when recording...
@@ -94,6 +104,7 @@ class Vision(object):
         #TODO: add logic to record video when framess are changed and a number of frames/seconds after...
         #if self._md.
         #self._videow.write(frame)
+        return frame
 
 
     def __del__(self):

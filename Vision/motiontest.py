@@ -20,7 +20,7 @@ t_plus = cv2.cvtColor(cam.read()[1], cv2.COLOR_RGB2GRAY)
 while True:
   diff = diffImg(t_minus, t, t_plus)
   cv2.imshow( winName, diff )
-  if cv2.countNonZero(diff) > 200000:
+  if cv2.countNonZero(diff) > 150000:
     print "Motion detected! " + str (cv2.countNonZero(diff))
 
   # Read next image

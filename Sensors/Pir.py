@@ -7,10 +7,13 @@ class PirSensor(object):
         self._pin = controlpin
         self._gpio.setup(self._pin,self._gpio.IN)
         self._pirmotion = False
+        self._pirCount = 0
 
 
     def update(self):
         if self._gpio.input(self._pin):
+            if not self._pirmotion:
+                self._pirCount = self._pirCount + 1
             self._pirmotion = True
             return True
         else:
@@ -19,11 +22,10 @@ class PirSensor(object):
 
     def draw(self, frame):
         if self._pirmotion:
-            cv2.putText(frame, "PIR: Motion Detected", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5,(255, 255, 255), 2)
-            return frame
+            cv2.putText(frame, "PIR: Motion Detected " + " #" + str(self._pirCount), (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5,(255, 255, 255), 2)
         else:
-            cv2.putText(frame, "PIR: No motion detected", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-            return frame
+            cv2.putText(frame, "PIR: No motion detected" + " (" + str(self._pirCount) + ")", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+        return frame
 
 
 
