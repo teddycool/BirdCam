@@ -8,11 +8,7 @@ import picamera
 #import picamera.array
 from picamera.array import PiRGBArray
 import cv2
-import sys
-import numpy as np
 import os
-import pickle
-import MotionDetector
 try:
     from config import birdcam
 except:
@@ -27,7 +23,6 @@ class Vision(object):
     def __init__(self):
         print "Vision object started..."
         self._seqno = 0
-        self._md = MotionDetector.MotionDetector()
         self._recording= False
 
 
@@ -62,38 +57,23 @@ class Vision(object):
         self._lastframetime = time.time()
         self._rawCapture = PiRGBArray(self._cam, size= self._resolution)
         self._imagegenerator = self._cam.capture_continuous(self._rawCapture, format="bgr", use_video_port=True)
-        self._md.initialize()
-        #TODO: move videoformat to config?
-        #TODO: Move to motion detector...
-        #self._videow = cv2.VideoWriter(birdcam["Vision"]["VideoFile"], cv2.VideoWriter_fourcc(*'XVID'), 5,  self._resolution, True)
+        print "getting first frame"
+        frame = self.update()
 
-    def _frameUpdate(self):
+    def update(self):
         rawframe = self._imagegenerator.next()
         self._rawCapture.truncate()
         self._rawCapture.seek(0)
         frame = rawframe.array
         return frame
 
-    def update(self, saveToFile = False):
-        #TODO: add logic for frame changed...
-        #TODO: fix VideoWriter to open/close files when needed
-        frame = self._frameUpdate()
-        frame = self._md.update(frame)
-        return frame
 
+    #Final draw and actually drawing to stream
     def draw(self, frame, framerate=0):
-        cv2.putText(frame, time.strftime("%Y-%m-%d %H:%M:%S"), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-        frame = self._md.draw(frame)
+        #cv2.putText(frame, time.strftime("%Y-%m-%d %H:%M:%S"), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
         if birdcam["Vision"]["PrintFrameRate"] and framerate!=0:
             cv2.putText(frame, "Framerate: " + str(framerate), (300, 30),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
-        #Note in stream when recording...
-        #if self._recording and (int(time.ctime()[18:19]) % 2 == 0):
-        #cv2.putText(frame, "<--Recording-->" , (500, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-
-        #Write to actual frame for MJPG streamer
-        #cv2.VideoWriter.open(birdcam["Vision"]["VideoFile"], cv2.VideoWriter_fourcc(*'XVID'), 5,  self._resolution, True )
         cv2.imwrite(birdcam["Streamer"]["StreamerImage"], frame)
-        #TODO: add logic to record video when framess are changed and a number of frames/seconds after...
         return frame
 
 

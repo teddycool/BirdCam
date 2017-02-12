@@ -3,8 +3,10 @@ __author__ = 'teddycool'
 birdcam = { "Cam": {"Res": (1024, 768), "Id": 1, "FrameRate": 20},
             "Streamer": {"StreamerImage": "/ram/stream/pic.jpg", "StreamerLib": "/ram/stream"},
             "RefreshRates": {"MainLoop": 10, "Streamer": 10, "Sensors": 0.01}, #times per second
-            "Vision": {"WriteRawImageToFile": False, "WriteCvImageToFile": False, "PrintFrameRate": True, "MotionCount": 200,
-                       "VideoFileDir": "/ram/videos/", "VideoFile":"/ram/videos/video.avi"},
+            "Vision": {"WriteRawImageToFile": False, "WriteCvImageToFile": False, "PrintFrameRate": True},
+            "MotionDetector": {"MotionCount": 200, "History":50},
+#            "Recorder": {"VideoFileDir": "/ram/videos/", "VideoFile":"/home/pi/BirdCam/video.avi"},
+            "Recorder": {"VideoFileDir": "/home/pi/BirdCam/", "VideoFile":"/home/pi/BirdCam/video.avi"},
             "Logger": {"LogFile": "/home/pi/BirdCam/Logger/log.txt"},
             "IrLigth": {"ControlPins":[26,19,13,6,4], "StartFreq": 100},
             "TempHum": {"Type": "2302","Pin": 2},

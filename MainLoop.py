@@ -5,6 +5,8 @@ import time
 
 from Sensors import DHT
 from Vision import Vision
+from Vision import MotionDetector
+from Recorder import Recorder
 from Actuators import IrLigth
 from config import birdcam
 from Sensors import Pir
@@ -14,6 +16,7 @@ from Sensors import Pir
 #Global GPIO used by all...
 import RPi.GPIO as GPIO
 import os
+import cv2
 
 class MainLoop(object):
     def __init__(self):
@@ -26,6 +29,11 @@ class MainLoop(object):
             self._irlight.append(IrLigth.IrLigth(self._gpio,birdcam["IrLigth"]["ControlPins"][index]))
         self._dht = DHT.DHT(birdcam["TempHum"]["Type"], birdcam["TempHum"]["Pin"])
         self._pir = Pir.PirSensor(self._gpio, birdcam["PirSensor"]["Pin"])
+        self._md = MotionDetector.MotionDetector()
+        self._rec = Recorder.Recorder()
+        self._pirMotion = False
+        self._mdMotion = False
+
 
 
     def initialize(self):
@@ -35,20 +43,26 @@ class MainLoop(object):
         for index in range(0, len(birdcam["IrLigth"]["ControlPins"])):
             self._irlight[index].initialize()
         self._vision.initialize()
+        self._md.initialize()
+        self._rec.initialize()
         print "BirdCam started at ", self.time
 
     def update(self):
-        #print " MainLoop update started"
-        self._dht.update()
-        self._pir.update()
+        #get next frame
         frame = self._vision.update()
+        self._dht.update()
+        self._pirMotion = self._pir.update()
+        self._mdMotion = self._md.update(frame)
+        self._rec.update(frame,self._pirMotion,self._mdMotion)
         #TODO: add sync/copy mechanism to netstorage at certain intervals
         return frame
 
     def draw(self, frame, fr):
         #print " MainLoop draw started"
         frame = self._dht.draw(frame)
+        frame = self._rec.draw(frame, fr)
         frame = self._pir.draw(frame)
+        frame = self._md.draw(frame)
         self._vision.draw(frame, fr)
 
     def __del__(self):
