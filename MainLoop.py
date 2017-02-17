@@ -10,7 +10,7 @@ from Recorder import Recorder
 from Actuators import IrLigth
 from config import birdcam
 from Sensors import Pir
-
+from Server import ServerSync
 
 
 #Global GPIO used by all...
@@ -31,6 +31,7 @@ class MainLoop(object):
         self._pir = Pir.PirSensor(self._gpio, birdcam["PirSensor"]["Pin"])
         self._md = MotionDetector.MotionDetector()
         self._rec = Recorder.Recorder()
+        self._sync = ServerSync.ServerSync()
         self._pirMotion = False
         self._mdMotion = False
 
@@ -45,6 +46,7 @@ class MainLoop(object):
         self._vision.initialize()
         self._md.initialize()
         self._rec.initialize()
+        self._sync.initialize()
         print "BirdCam started at ", self.time
 
     def update(self):
@@ -54,15 +56,18 @@ class MainLoop(object):
         self._pirMotion = self._pir.update()
         self._mdMotion = self._md.update(frame)
         self._rec.update(frame,self._pirMotion,self._mdMotion)
+        self._sync.update()
         #TODO: add sync/copy mechanism to netstorage at certain intervals
         return frame
 
     def draw(self, frame, fr):
         #print " MainLoop draw started"
         frame = self._dht.draw(frame)
-        frame = self._rec.draw(frame, fr)
+
         frame = self._pir.draw(frame)
         frame = self._md.draw(frame)
+        frame = self._rec.draw(frame, fr)
+        frame = self._sync.draw(frame)
         self._vision.draw(frame, fr)
 
     def __del__(self):

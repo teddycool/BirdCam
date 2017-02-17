@@ -39,12 +39,12 @@ class Recorder(object):
                     (255, 255, 255), 2)
 
         if self._state == "START":
-            filename = "bc2" + time.strftime("%Y-%m-%d_%H%M%S") + ".avi"
+            filename = "bc2_" + time.strftime("%Y%m%d_%H%M%S") + ".avi"
             self._videow = cv2.VideoWriter(birdcam["Recorder"]["VideoFileDir"] + filename,
                                            cv2.VideoWriter_fourcc(*'XVID'), int(fr),
                                            birdcam["Cam"]["Res"], True)
             self._videow.write(frame)
-            cv2.putText(frame, "<--Recording-->", (500, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(frame, "<--Recording-->", (400, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
         elif self._state == "IDLE":
             if self._videow is not None:
@@ -53,6 +53,6 @@ class Recorder(object):
 
         elif self._state == "REC":
             self._videow.write(frame)
-            cv2.putText(frame, "<--Recording-->", (500, 30), cv2.FONT_HERSHEY_SIMPLEX, 1 , (0, 0, 255), 2)
+            cv2.putText(frame, "<--Recording-->", (400, 200), cv2.FONT_HERSHEY_SIMPLEX, 1 , (0, 0, 255), 2)
         return frame
 

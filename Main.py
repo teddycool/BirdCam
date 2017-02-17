@@ -12,11 +12,14 @@ class Main(object):
         self._mainLoop=MainLoop.MainLoop()
         print "Staring mainloop initialize"
         self._mainLoop.initialize()
+        f = file("bc2_restarts.txt", 'a')
+        f.write(time.asctime() + "\n")
+        f.close()
 
 
     def run(self):
         running = True
-        print "Staring mainloop update"
+        print "Starting mainloop update"
         while running:
             start = time.time()
             try:
@@ -30,18 +33,16 @@ class Main(object):
             except:
                 running = False
                 e = sys.exc_info()
-                t = time
-                n = time.ctime()[11:13] + time.ctime()[14:16]
-                s = str(n).rjust(4)
                 f = file(time.asctime() + ".log", 'w')
                 for l in e:
                     print l
                     f.write(str(l))
+                print "Execution ended..."
             #     #TODO: add reboot counter to avoid restarting over and over again...
 
-            #     print "Waiting to reboot..."
-            #     time.sleep(2)
-            #     os.system('sudo reboot')
+                print "Waiting to reboot..."
+                time.sleep(2)
+                os.system('sudo reboot')
 
 
 #Testcode to run module. Standard Python way of testing modules.
