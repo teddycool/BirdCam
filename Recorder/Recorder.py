@@ -20,15 +20,14 @@ class Recorder(object):
         print "Recorder initialised with state " + self._state
 
 
-    def update(self,frame, pirmotion, mdmotion):
-        #TODO: move recording to draw function
-        if pirmotion or mdmotion:
+    def update(self,frame, mdmotion):
+        if mdmotion:
             if self._state == "IDLE":
                 self._state = "START"
             elif self._state == "START":
                 self._state = "REC"
 
-        if not pirmotion and not mdmotion:
+        if not mdmotion:
             self._state = "IDLE"
 
         return self._state
@@ -44,15 +43,14 @@ class Recorder(object):
                                            cv2.VideoWriter_fourcc(*'XVID'), int(fr),
                                            birdcam["Cam"]["Res"], True)
             self._videow.write(frame)
-            cv2.putText(frame, "<--Recording-->", (400, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(frame, "rec", (900, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
         elif self._state == "IDLE":
             if self._videow is not None:
-                #self._videow.close()
-                self._videow = None
+                self._videow = None #Closing video file...
 
         elif self._state == "REC":
             self._videow.write(frame)
-            cv2.putText(frame, "<--Recording-->", (400, 200), cv2.FONT_HERSHEY_SIMPLEX, 1 , (0, 0, 255), 2)
+            cv2.putText(frame, "rec", (900, 30), cv2.FONT_HERSHEY_SIMPLEX, 1 , (0, 0, 255), 2)
         return frame
 

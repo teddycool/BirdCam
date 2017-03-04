@@ -23,8 +23,8 @@ class PirSensor(object):
     def draw(self, frame):
         if self._pirmotion:
             cv2.putText(frame, "PIR: Motion Detected " + " #" + str(self._pirCount), (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5,(255, 255, 255), 2)
-        else:
-            cv2.putText(frame, "PIR: No motion detected" + " (" + str(self._pirCount) + ")", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+        # else:
+        #     cv2.putText(frame, "PIR: No motion detected" + " (" + str(self._pirCount) + ")", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
         return frame
 
 

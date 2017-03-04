@@ -35,7 +35,7 @@ class DHT(object):
             self._lastUpdate = time.time()
 
     def draw(self, frame):
-        cv2.putText(frame, self._hum +  "%, " + self._temp + "C", (10,50),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
+        cv2.putText(frame, "Temp. " + self._temp + "C Hum. " + self._hum +  "%", (10,50),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
         return frame
 
 

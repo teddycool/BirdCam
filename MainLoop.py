@@ -28,11 +28,11 @@ class MainLoop(object):
         for index in range(0,len(birdcam["IrLigth"]["ControlPins"])):
             self._irlight.append(IrLigth.IrLigth(self._gpio,birdcam["IrLigth"]["ControlPins"][index]))
         self._dht = DHT.DHT(birdcam["TempHum"]["Type"], birdcam["TempHum"]["Pin"])
-        self._pir = Pir.PirSensor(self._gpio, birdcam["PirSensor"]["Pin"])
+        #self._pir = Pir.PirSensor(self._gpio, birdcam["PirSensor"]["Pin"])
         self._md = MotionDetector.MotionDetector()
         self._rec = Recorder.Recorder()
         self._sync = ServerSync.ServerSync()
-        self._pirMotion = False
+        #self._pirMotion = False
         self._mdMotion = False
 
 
@@ -53,9 +53,9 @@ class MainLoop(object):
         #get next frame
         frame = self._vision.update()
         self._dht.update()
-        self._pirMotion = self._pir.update()
+        #self._pirMotion = self._pir.update()
         self._mdMotion = self._md.update(frame)
-        self._rec.update(frame,self._pirMotion,self._mdMotion)
+        self._rec.update(frame,self._mdMotion)
         self._sync.update()
         #TODO: add sync/copy mechanism to netstorage at certain intervals
         return frame
@@ -64,7 +64,7 @@ class MainLoop(object):
         #print " MainLoop draw started"
         frame = self._dht.draw(frame)
 
-        frame = self._pir.draw(frame)
+        #frame = self._pir.draw(frame)
         frame = self._md.draw(frame)
         frame = self._rec.draw(frame, fr)
         frame = self._sync.draw(frame)

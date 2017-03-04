@@ -44,6 +44,8 @@ class Vision(object):
         self._cam.hflip = False
         self._cam.vflip = False
         self._cam.framerate = birdcam["Cam"]["FrameRate"]
+        #Rotate the camera-view
+        self._cam.rotation = 270
         print "Wait for the automatic gain control to settle"
         time.sleep(2)
         print "Setting cam fix values"
@@ -70,7 +72,6 @@ class Vision(object):
 
     #Final draw and actually drawing to stream
     def draw(self, frame, framerate=0):
-        #cv2.putText(frame, time.strftime("%Y-%m-%d %H:%M:%S"), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
         if birdcam["Vision"]["PrintFrameRate"] and framerate!=0:
             cv2.putText(frame, "Framerate: " + str(framerate), (300, 30),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
         cv2.imwrite(birdcam["Streamer"]["StreamerImage"], frame)

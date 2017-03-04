@@ -39,7 +39,6 @@ class Main(object):
                     f.write(str(l))
                 print "Execution ended..."
             #     #TODO: add reboot counter to avoid restarting over and over again...
-
                 print "Waiting to reboot..."
                 time.sleep(2)
                 os.system('sudo reboot')
@@ -53,7 +52,7 @@ class Main(object):
 #sudo mkdir -p /ram
 #sudo mount -t tmpfs -o size=100m tmpfs /ram
 
-# sudo mount -t cifs //192.168.0.4/videos /mnt/ubuntu -o user=pi,pass=raspberry,dom=EV39
+# sudo mount -t cifs //192.168.10.6/bcvideos /mnt/ubuntu -o user=pi,pass=raspberry,dom=EV39
 
 
 if __name__ == "__main__":
