@@ -31,7 +31,6 @@ class Vision(object):
         print "Starting streamer..."
 
         print os.system('sudo mkdir /ram/stream')
-        print os.system('sudo mkdir /ram/videos')
         print os.system('sudo LD_LIBRARY_PATH=/home/pi/mjpg-streamer/mjpg-streamer  /home/pi/mjpg-streamer/mjpg-streamer/mjpg_streamer -i "input_file.so -f /ram/stream -n pic.jpg" -o "output_http.so -w /home/pi/mjpg-streamer/mjpg-streamer/www" &')
 
         print "CAM init..."

@@ -55,9 +55,8 @@ class MainLoop(object):
         self._dht.update()
         #self._pirMotion = self._pir.update()
         self._mdMotion = self._md.update(frame)
-        self._rec.update(frame,self._mdMotion)
-        self._sync.update()
-        #TODO: add sync/copy mechanism to netstorage at certain intervals
+        recstate = self._rec.update(frame,self._mdMotion)
+        self._sync.update(recstate)
         return frame
 
     def draw(self, frame, fr):
