@@ -5,6 +5,12 @@ Videos will be recorded as soon something moves in the birdhouse.
 Sensors will detect temperature and humidity. 
 This information will also be put as text in the video-stream.
 
+Live videostream:
+http://sundback.ddns.net/
+
+YouTube playlist with selected videos:
+https://www.youtube.com/playlist?list=PLV_h32w58P6Ss1o6f9AJ31OyPY4yqLoO2
+
 Project webpage (currently in swedish):
 http://www.sundback.com/wp/projekt/holkcam/holkcam2/
 
