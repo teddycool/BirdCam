@@ -1,33 +1,7 @@
 
 
-
-* Fix recording of video by command from python
-
-lagra filerna lokalt (inte i tmp) och synka automatiskt till egen webserver
-videoströmma 'live'
-
-
-Att lösa i mjukvara:
-* Synk. / kopiering från RPi till webservern?
-* Videoström från opencv via mjpgstreamer med temp värden
-* Opencv detekterar om det är någon i holken.
-
-Att lösa innan uppsättning av holken
-
-* Montera i holken
-* Täta taket
-
-
-
 http://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/
 
+Make a 'buffer'-queue for the recorder with 3-5 frames. When recording starts these frames are written to videofile i 'START'-state
 
-ready:
-* Implement IR-light and control
-* Fix a working streamer
 
-* Implement temp/hum sensor
-* Fixera kamera (smältlim)
-* Gör ren lins och ställ in skärpan
-* Fixa en ljusramp till
-* Säkra strömmatningen mot glappkontakt

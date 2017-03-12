@@ -30,8 +30,8 @@ class MotionDetector(object):
         return self._motionDetected
 
     def draw(self, frame):
-        if self._motionDetected:
-            cv2.putText(frame, "VIDEO: Motion Detected " + " #" + str(self._diffcount[1]), (10, 90), cv2.FONT_HERSHEY_SIMPLEX,0.5, (255, 255, 255), 2)
+     #   if self._motionDetected:
+     #       cv2.putText(frame, "VIDEO: Motion Detected " + " #" + str(self._diffcount[1]), (10, 90), cv2.FONT_HERSHEY_SIMPLEX,0.5, (255, 255, 255), 2)
        # else:
        #     cv2.putText(frame, "VIDEO: No motion detected"+ " #" + str(self._diffcount[1]), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
         return frame

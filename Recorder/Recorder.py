@@ -28,11 +28,18 @@ class Recorder(object):
                 self._state = "START"
             elif self._state == "START":
                 self._state = "REC"
+            # -> Keep REC if still motion detected but abort if maxframes is reached
             elif self._state == "REC":
-                self._state = "REC"
+                if self._framecount > birdcam["Recorder"]["MaxFrames"]:
+                    self._state = "STOP"
+                    print "Stopping recording due to maxframes, closing file"
+                    self._framecount = 0
+                    self._videow = None
+            #    else:
+            #        self._state = "REC"
             elif self._state == "STOP":
                 self._state = "IDLE"
-            # -> Keep REC if still motion detected
+
 
         #TODO: Add max recording time
         if not mdmotion:
@@ -55,12 +62,9 @@ class Recorder(object):
         cv2.putText(frame, time.strftime("%Y-%m-%d %H:%M:%S"), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                     (255, 255, 255), 2)
 
-
-
         if self._state == "START":
             print "Start recording"
             filename = "bc2_" + time.strftime("%Y%m%d_%H%M%S") + ".avi"
-            #TODO: change to tempfile dir
             self._videow = cv2.VideoWriter(birdcam["Recorder"]["VideoFileDir"] + filename,
                                            cv2.VideoWriter_fourcc(*'XVID'), int(fr),
                                            birdcam["Cam"]["Res"], True)

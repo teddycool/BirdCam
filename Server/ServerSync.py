@@ -34,7 +34,7 @@ class ServerSync(object):
                     print "File to handle: " + fh
                     size = os.path.getsize(fh)
                     print "filesize = " + str(size)
-                    if  size > birdcam["Recorder"]["MinSize"]:
+                    if  size > birdcam["Server"]["MinSizeToCopy"]:
                         try:
                             shutil.copy2(fh, join(birdcam["Server"]["MntPoint"] + birdcam["Server"]["subdir"], f))
                             print "Copied file to webserver: " + join(
