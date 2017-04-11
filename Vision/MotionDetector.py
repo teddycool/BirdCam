@@ -3,7 +3,12 @@ __author__ = 'teddycool'
 
 import time
 import cv2
-from config import birdcam
+try:
+    from config import birdcam
+except:
+    birdcam = { "Vision": {"WriteRawImageToFile": False, "WriteCvImageToFile": False, "PrintFrameRate": False},
+    "MotionDetector": {"MotionCount": 200, "History": 50}}
+
 
 #Min number of changed pixels for motion detected
 #Number of frames before motion true
@@ -49,15 +54,17 @@ class MotionDetector(object):
 if __name__ == '__main__':
     #Testcode for motiondetector
     #TODO: try with a videofile instead
-    cam = cv2.VideoCapture(0)
+    #vidcap = cv2.VideoCapture("C:\\Users\\psk\\Documents\\GitHub\\DartScore\\dartscore_20170326_185600.avi")
+    cam = cv2.VideoCapture("C:\\Users\\psk\\Documents\\GitHub\\DartScore\\dartscore_20170326_185600.avi")
+    img = cam.read()[1]
+    print img
+
     winName = "Movement Indicator"
     cv2.namedWindow(winName, cv2.CV_WINDOW_AUTOSIZE)
-    md = MotionDetector()
-    md.initialize(cam.read()[1])
+#    md = MotionDetector()
+#    md.initialize()
     while True:
-        md.update(cam.read()[1])
-        cv2.imshow(winName, md._diff)
-        print md._motionDetected
+        cv2.imshow("test", cam.read()[1])
 
         key = cv2.waitKey(10)
         if key == 27:

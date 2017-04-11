@@ -47,13 +47,14 @@ class Vision(object):
         self._cam.rotation = 270
         print "Wait for the automatic gain control to settle"
         time.sleep(2)
-        print "Setting cam fix values"
+      #  print "Setting cam fix values"
         # Now fix the values
-        self._cam.shutter_speed = self._cam.exposure_speed
-        self._cam.exposure_mode = 'off'
-        g = self._cam.awb_gains
-        self._cam.awb_mode = 'off'
-        self._cam.awb_gains = g
+        #self._cam.shutter_speed = self._cam.exposure_speed
+        self._cam.exposure_mode = 'auto'
+       # g = self._cam.awb_gains
+        self._cam.awb_mode = 'auto'
+        self._cam.sharpness = 10
+      # self._cam.awb_gains = g
         print "Starting image-generator..."
         self._lastframetime = time.time()
         self._rawCapture = PiRGBArray(self._cam, size= self._resolution)
