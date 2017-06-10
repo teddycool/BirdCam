@@ -50,7 +50,7 @@ class Vision(object):
       #  print "Setting cam fix values"
         # Now fix the values
         #self._cam.shutter_speed = self._cam.exposure_speed
-        self._cam.exposure_mode = 'auto'
+        self._cam.exposure_mode = 'sports'
        # g = self._cam.awb_gains
         self._cam.awb_mode = 'auto'
         self._cam.sharpness = 10
