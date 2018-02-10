@@ -11,6 +11,7 @@ from Actuators import IrLigth
 from config import birdcam
 from Sensors import Pir
 from Server import ServerSync
+from Sensors import DS18B20
 
 
 #Global GPIO used by all...
@@ -28,6 +29,8 @@ class MainLoop(object):
         for index in range(0,len(birdcam["IrLigth"]["ControlPins"])):
             self._irlight.append(IrLigth.IrLigth(self._gpio,birdcam["IrLigth"]["ControlPins"][index]))
         self._dht = DHT.DHT(birdcam["TempHum"]["Type"], birdcam["TempHum"]["Pin"])
+        self._insideTemp = DS18B20.DS18B20("28-0317000161ff")
+        self._outsideTemp = DS18B20.DS18B20("28-0516a7c088ff")
         #self._pir = Pir.PirSensor(self._gpio, birdcam["PirSensor"]["Pin"])
         self._md = MotionDetector.MotionDetector()
         self._rec = Recorder.Recorder()

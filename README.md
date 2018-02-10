@@ -1,3 +1,5 @@
+
+
 # BirdCam
 A raspberry pi 3 with an ir-cam mounted in a bird-house connected by WLAN to our network.
 Video-files will be stored on the pi but also synchronized to a network-disc and web-server.
