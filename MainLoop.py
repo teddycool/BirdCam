@@ -28,7 +28,7 @@ class MainLoop(object):
         self._irlight = []
         for index in range(0,len(birdcam["IrLigth"]["ControlPins"])):
             self._irlight.append(IrLigth.IrLigth(self._gpio,birdcam["IrLigth"]["ControlPins"][index]))
-        self._dht = DHT.DHT(birdcam["TempHum"]["Type"], birdcam["TempHum"]["Pin"])
+        #self._dht = DHT.DHT(birdcam["TempHum"]["Type"], birdcam["TempHum"]["Pin"])
         self._insideTemp = DS18B20.DS18B20("28-0317000161ff")
         self._outsideTemp = DS18B20.DS18B20("28-0516a7c088ff")
         #self._pir = Pir.PirSensor(self._gpio, birdcam["PirSensor"]["Pin"])
@@ -55,8 +55,10 @@ class MainLoop(object):
     def update(self):
         #get next frame
         frame = self._vision.update()
-        self._dht.update()
+        #self._dht.update()
         #self._pirMotion = self._pir.update()
+        self._insideTemp.update()
+        self._outsideTemp.update()
         self._mdMotion = self._md.update(frame)
         recstate = self._rec.update(frame,self._mdMotion)
         self._sync.update(recstate)
@@ -64,9 +66,10 @@ class MainLoop(object):
 
     def draw(self, frame, fr):
         #print " MainLoop draw started"
-        frame = self._dht.draw(frame)
-
+        #frame = self._dht.draw(frame)
         #frame = self._pir.draw(frame)
+        frame = self._outsideTemp.draw(frame,"Outside: ", 50)
+        frame = self._insideTemp.draw(frame,"Inside: ", 200)
         frame = self._md.draw(frame)
         frame = self._rec.draw(frame, fr)
         frame = self._sync.draw(frame)

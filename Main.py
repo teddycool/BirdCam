@@ -51,7 +51,7 @@ class Main(object):
 #Put in  /etc/rc.local to create the nedded ramdisk:
 #sudo mkdir -p /ram
 #sudo mount -t tmpfs -o size=100m tmpfs /ram
-
+ 
 # sudo mount -t cifs //192.168.10.6/bcvideos /mnt/ubuntu -o user=pi,pass=raspberry,dom=EV39
 
 

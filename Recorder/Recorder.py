@@ -64,7 +64,7 @@ class Recorder(object):
 
         if self._state == "START":
             print "Start recording"
-            filename = "bc2_" + time.strftime("%Y%m%d_%H%M%S") + ".avi"
+            filename = "bc3_" + time.strftime("%Y%m%d_%H%M%S") + ".avi"
             self._videow = cv2.VideoWriter(birdcam["Recorder"]["VideoFileDir"] + filename,
                                            cv2.VideoWriter_fourcc(*'XVID'), int(fr),
                                            birdcam["Cam"]["Res"], True)
