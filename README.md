@@ -1,6 +1,6 @@
 
 
-# BirdCam
+# BirdCam generation 3
 A raspberry pi 3 with an ir-cam mounted in a bird-house connected by WLAN to our network.
 Video-files will be stored on the pi but also synchronized to a network-disc and web-server.
 Videos will be recorded as soon something moves in the birdhouse.
@@ -11,10 +11,10 @@ Live videostream:
 http://sundback.ddns.net/
 
 YouTube playlist with selected videos:
-https://www.youtube.com/playlist?list=PLV_h32w58P6Ss1o6f9AJ31OyPY4yqLoO2
+https://www.youtube.com/playlist?list=PLV_h32w58P6RqVj_bv-gp7MivZIyKaHpq
 
 Project webpage (currently in swedish):
-http://www.sundback.com/wp/projekt/holkcam/holkcam2/
+http://www.sundback.com/wp/projekt/holkcam/holkcam3/
 
 
 sudo apt-get update
